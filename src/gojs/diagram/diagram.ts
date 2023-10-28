@@ -1,6 +1,7 @@
 import * as go from 'gojs';
 
 import { createDiagramCircleNodeTemplate, createDiagramRoundedRectangleNodeTemplate } from './templates';
+import { CustomLinkingTool } from './linkingTool';
 
 const $ = go.GraphObject.make;
 
@@ -19,7 +20,8 @@ export const createDiagram = (diagramDiv: HTMLDivElement) => {
     ];
 
     diagram.layout = new go.Layout();
-    
+    diagram.toolManager.linkingTool = new CustomLinkingTool();
+
     (window as any).goJsDiagram = diagram;
     
     return diagram;
