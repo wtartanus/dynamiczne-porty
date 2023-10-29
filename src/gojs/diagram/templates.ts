@@ -2,25 +2,11 @@ import * as go from 'gojs';
 
 const $ = go.GraphObject.make;
 
-const click = (e: go.InputEvent, node: go.GraphObject) => {
-    if (e.diagram.lastInput.left && e.diagram.lastInput.control && node instanceof go.Node) {
-        e.diagram.startTransaction("addPort");
-        const portX = e.documentPoint.x - node.location.x;
-        const portY = e.documentPoint.y - node.location.y;
-
-        const port = e.diagram.toolManager.linkingTool.findLinkablePort();
-        port.position = new go.Point(portX, portY);
-        node.add(port)
-        e.diagram.commitTransaction("addPort");
-    }
-};
-
 export const createDiagramRoundedRectangleNodeTemplate = () => $(
     go.Node,
     {
         resizable: true,
         resizeObjectName: "RoundedRectangle",
-        click
     },
     $(
         go.Panel,
@@ -32,8 +18,15 @@ export const createDiagramRoundedRectangleNodeTemplate = () => $(
                 fill: '#117a2d',
                 desiredSize: new go.Size(250, 250),
                 name: 'RoundedRectangle',
+                portId: '1',
+                fromLinkable: true,
+                toLinkable: true,
             },
         ),
+        new go.Binding('itemArray', 'ports'),
+        {
+            itemTemplate: portTemplate()
+        }
     )
 );
 
@@ -42,7 +35,6 @@ export const createDiagramCircleNodeTemplate = () => $(
     {
         resizable: true,
         resizeObjectName: "Circle",
-        click,
     },
     $(
         go.Panel,
@@ -53,8 +45,34 @@ export const createDiagramCircleNodeTemplate = () => $(
             {
                 fill: '#11447a',
                 desiredSize: new go.Size(250, 250),
-                name: 'Circle'
+                name: 'Circle',
+                portId: '2',
+                fromLinkable: true,
             },
         ),
+        new go.Binding('itemArray', 'ports'),
+        {
+            itemTemplate: portTemplate()
+        }
+    )
+);
+
+const portTemplate = () => $(
+    go.Panel, 
+    go.Panel.Auto,
+    {
+        portId: '',
+        fromLinkable: true,
+        toLinkable: true,
+        cursor: 'pointer',
+    },
+    new go.Binding('portId', 'portId'),
+    $(go.Shape, 'Rectangle', {
+        fill: "black", 
+        strokeWidth: 1,
+        width: 10,
+        height: 10,
+    },
+    new go.Binding('position', 'position', ({x, y}) => new go.Point(x, y)),
     )
 );

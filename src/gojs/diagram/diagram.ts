@@ -15,8 +15,8 @@ export const createDiagram = (diagramDiv: HTMLDivElement) => {
     ]);
 
     diagram.model.nodeDataArray = [
-        { category: 'circle' },
-        { category: 'roundedRectangle' }
+        { category: 'circle', ports: [] },
+        { category: 'roundedRectangle', ports: [] }
     ];
 
     diagram.layout = new go.Layout();
