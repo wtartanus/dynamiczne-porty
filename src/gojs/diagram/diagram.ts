@@ -21,6 +21,8 @@ export const createDiagram = (diagramDiv: HTMLDivElement) => {
 
     diagram.layout = new go.Layout();
     diagram.toolManager.linkingTool = new CustomLinkingTool();
+    (diagram.model as go.GraphLinksModel).linkFromPortIdProperty = "fromPort";
+    (diagram.model as go.GraphLinksModel).linkToPortIdProperty = "toPort",
 
     (window as any).goJsDiagram = diagram;
     
